@@ -1,0 +1,10 @@
+version: '0.1'
+
+services:
+  nginx:
+    container_name: nginx
+    build: 
+      dockerfile: ./requirements/nginx/Dockerfile
+    ports:
+      - "443:443"
+      - "80:80"
