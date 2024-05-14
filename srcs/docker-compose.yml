@@ -1,10 +1,26 @@
 version: '0.1'
 
 services:
-  nginx:
-    container_name: nginx
-    build: 
-      dockerfile: ./requirements/nginx/Dockerfile
+ mariadb:
+    container_name: mariadb
+    build:
+      dockerfile: ./requirements/mariadb/Dockerfile
+    volumes:
+      - ./requirements/mariadb/tools/mysql:/var/lib/mysql
     ports:
-      - "443:443"
-      - "80:80"
+      - "3306:3306"
+    env_file:
+      - .env
+    tty: true
+    
+  #nginx:
+  #container_name: nginx
+  # build: 
+  #   dockerfile: ./requirements/nginx/Dockerfile
+  # ports:
+  #   - "443:443"
+  #   - "80:80"
+  # environment:
+  #   - DOMAIN_NAME=${DOMAIN_NAME}
+  #     
+ 
