@@ -1,8 +1,8 @@
 FROM debian:oldstable
 
+COPY requirements/nginx/conf requirements/nginx/tools/ /app/
 RUN apt update -y
 RUN apt install nginx -y
-COPY requirements/nginx/conf requirements/nginx/tools/ /app/
 
 RUN mkdir /etc/nginx/ssl
 RUN cp /app/privatekey.pem /etc/nginx/ssl/privatekey.pem

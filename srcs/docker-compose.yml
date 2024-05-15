@@ -1,26 +1,50 @@
 version: '0.1'
 
 services:
- mariadb:
+  wordpress:
+    container_name: wordpress
+    image: wordpress
+    build:
+      dockerfile: ./requirements/wordpress/Dockerfile
+    ports:
+      - "8080:8080"
+    env_file:
+      - db.env
+      - wordpress.env
+    networks:
+      - inception-network
+    restart: unless-stopped
+    depends_on:
+      - mariadb
+ 
+  mariadb:
     container_name: mariadb
+    image: mariadb
     build:
       dockerfile: ./requirements/mariadb/Dockerfile
     volumes:
       - ./requirements/mariadb/tools/mysql:/var/lib/mysql
+    env_file:
+      - db.env
+    networks:
+      - inception-network
     ports:
       - "3306:3306"
-    env_file:
-      - .env
     tty: true
     
-  #nginx:
-  #container_name: nginx
-  # build: 
-  #   dockerfile: ./requirements/nginx/Dockerfile
-  # ports:
-  #   - "443:443"
-  #   - "80:80"
-  # environment:
-  #   - DOMAIN_NAME=${DOMAIN_NAME}
-  #     
- 
+  nginx:
+    container_name: nginx
+    image: nginx
+    build: 
+      dockerfile: ./requirements/nginx/Dockerfile
+    ports:
+      - "443:443"
+      - "80:80"
+    env_file:
+      - db.env
+    networks:
+      - inception-network
+
+networks:
+  inception-network:
+    driver: bridge
