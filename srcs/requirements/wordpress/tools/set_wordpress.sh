@@ -35,9 +35,12 @@ mv wp-cli.phar /usr/local/bin/wp
 cd /var/www/html/
 wp core download --allow-root
 mv /app/wp-config.php /var/www/html/wp-config.php
-rm /var/www/html/wp-config-sample.php
-wp core install --url=$DOMAIN_NAME/ --title=$WP_TITLE --admin_user=$WP_ADMIN_USER --admin_password=$WP_ADMIN_PASS --admin_email=abc@google.com --allow-root
+rm -f /var/www/html/wp-config-sample.php
+echo "aa\n"
+wp core install --url=localhost --title=$WP_TITLE --admin_user=$WP_ADMIN_USER --admin_password=$WP_ADMIN_PASS --admin_email=abc@google.com --allow-root
+echo "bb\n"
 wp user create $WP_SEC_USER abcd@google.com --user_pass=$WP_SEC_PASS --role=author --allow-root
 
 mkdir -p /run/php
+sed -i 's/listen = \/run\/php\/php7.4-fpm.sock/listen = 8080/g' /etc/php/7.4/fpm/pool.d/www.conf
 /usr/sbin/php-fpm7.4 -F

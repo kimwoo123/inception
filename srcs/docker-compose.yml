@@ -6,8 +6,6 @@ services:
     image: wordpress
     build:
       dockerfile: ./requirements/wordpress/Dockerfile
-    ports:
-      - "8080:8080"
     env_file:
       - db.env
       - wordpress.env
@@ -16,20 +14,20 @@ services:
     restart: unless-stopped
     depends_on:
       - mariadb
+    volumes:
+      - wordpress:/var/www/html
  
   mariadb:
     container_name: mariadb
     image: mariadb
     build:
       dockerfile: ./requirements/mariadb/Dockerfile
-    volumes:
-      - ./requirements/mariadb/tools/mysql:/var/lib/mysql
     env_file:
       - db.env
     networks:
       - inception-network
-    ports:
-      - "3306:3306"
+    volumes:
+      - mariadb:/var/lib/mysql
     tty: true
     
   nginx:
@@ -39,11 +37,30 @@ services:
       dockerfile: ./requirements/nginx/Dockerfile
     ports:
       - "443:443"
-      - "80:80"
     env_file:
       - db.env
     networks:
       - inception-network
+    volumes:
+      - wordpress:/var/www/html
+    depends_on:
+      - wordpress
+
+volumes:
+  wordpress:
+    name: wordpress
+    driver: local
+    driver_opts:
+      device: /Users/wooseoki/incep/wordpress
+      o: bind
+      type: none
+  mariadb:
+    name: mariadb
+    driver: local
+    driver_opts:
+      device: /Users/wooseoki/incep/mariadb
+      o: bind
+      type: none
 
 networks:
   inception-network:
