@@ -51,14 +51,14 @@ volumes:
     name: wordpress
     driver: local
     driver_opts:
-      device: /Users/wooseoki/incep/wordpress
+      device: /home/wooseoki/data
       o: bind
       type: none
   mariadb:
     name: mariadb
     driver: local
     driver_opts:
-      device: /Users/wooseoki/incep/mariadb
+      device: /home/wooseoki/data
       o: bind
       type: none
 

@@ -1,7 +1,6 @@
 FROM debian:oldstable
 
 COPY requirements/wordpress/tools/set_wordpress.sh /app/
-#COPY tools/set_wordpress.sh /app/
 RUN chmod 755 /app/set_wordpress.sh
 
 RUN apt update -y
